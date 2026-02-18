@@ -19,7 +19,9 @@ namespace LibeyTechnicalTestDomain.LibeyUserAggregate.Infrastructure
         public LibeyUserResponse FindResponse(string documentNumber)
         {
 
-            var q = from libeyUser in _context.LibeyUsers.Where(x => x.DocumentNumber.Equals(documentNumber))
+            var q = from libeyUser in _context.LibeyUsers
+                    join ubigeo in _context.Ubigeos on libeyUser.UbigeoCode equals ubigeo.UbigeoCode // Join clave
+                    where libeyUser.DocumentNumber.Equals(documentNumber)
                     select new LibeyUserResponse()
                     {
                         DocumentNumber = libeyUser.DocumentNumber,
@@ -31,8 +33,12 @@ namespace LibeyTechnicalTestDomain.LibeyUserAggregate.Infrastructure
                         MothersLastName = libeyUser.MothersLastName,
                         Name = libeyUser.Name,
                         Password = libeyUser.Password,
-                        Phone = libeyUser.Phone
+                        Phone = libeyUser.Phone,
+                        UbigeoCode = libeyUser.UbigeoCode,
+                        RegionCode = ubigeo.RegionCode,
+                        ProvinceCode = ubigeo.ProvinceCode
                     };
+
             var list = q.ToList();
             if (list.Any()) return list.First();
             else return new LibeyUserResponse();

@@ -28,5 +28,30 @@
             Password = password;
             Active = true;
         }
+
+        public void Update(
+    int documentTypeId,
+    string name,
+    string fathersLastName,
+    string mothersLastName,
+    string address,
+    string ubigeoCode,
+    string phone,
+    string email,
+    string password = null)
+        {
+            DocumentTypeId = documentTypeId;
+            Name = name;
+            FathersLastName = fathersLastName;
+            MothersLastName = mothersLastName;
+            Address = address;
+            UbigeoCode = ubigeoCode;
+            Phone = phone;
+            Email = email;
+            if (!string.IsNullOrEmpty(password))
+            {
+                Password = password;
+            }
+        }
     }
 }

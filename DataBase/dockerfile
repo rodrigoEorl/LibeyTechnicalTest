@@ -1,9 +1,25 @@
 FROM mcr.microsoft.com/mssql/server:2019-CU12-ubuntu-20.04
+
+# Variables de entorno
 ENV ACCEPT_EULA=Y
 ENV SA_PASSWORD=.Nv3rrefg049jsKK.
 ENV MSSQL_PID=Express
-COPY ["CEM/SqlCmdScript.sql","var/opt/sqlserver/SqlCmdScript.sql"]
+
+# Cambiamos a root para configurar carpetas
 USER root
-RUN chmod +x var/opt/sqlserver/SqlCmdScript.sql
-USER mssql
-RUN /opt/mssql/bin/sqlservr & sleep 60s & /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P .Nv3rrefg049jsKK. -d master -i /var/opt/sqlserver/SqlCmdScript.sql
+
+# Creamos la carpeta de destino
+RUN mkdir -p /var/opt/sqlserver
+WORKDIR /var/opt/sqlserver
+
+# COPIA: Copiamos el contenido de la carpeta CEM (donde están tus .sh y .sql)
+# al directorio actual de trabajo en el contenedor
+COPY CEM/ /var/opt/sqlserver/
+
+# PERMISOS: Ajustamos los nombres a minúsculas si así están en tu Windows.
+# Si tus archivos empiezan con Mayúscula, cámbialos aquí también.
+RUN chmod +x /var/opt/sqlserver/entrypoint.sh
+RUN chmod +x /var/opt/sqlserver/SqlCmdStartup.sh
+
+# El ENTRYPOINT debe coincidir exactamente con el nombre del archivo
+ENTRYPOINT ["/bin/bash", "/var/opt/sqlserver/entrypoint.sh"]

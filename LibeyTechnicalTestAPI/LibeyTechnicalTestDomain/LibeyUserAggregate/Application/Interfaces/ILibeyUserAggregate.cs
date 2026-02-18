@@ -5,5 +5,8 @@ namespace LibeyTechnicalTestDomain.LibeyUserAggregate.Application.Interfaces
     {
         LibeyUserResponse FindResponse(string documentNumber);
         void Create(UserUpdateorCreateCommand command);
+        List<LibeyUserResponse> GetAll(string filter = "");
+        void Delete(string documentNumber);
+        void Update(UserUpdateorCreateCommand command);
     }
 }

@@ -1,0 +1,37 @@
+<form #userForm="ngForm" style="padding-right: 5%; padding-left: 5%; ">
+	<div class="card" style="width: 100%;margin-top: 2rem;background-color:#edf2f6;border-radius: 10px; height: 70em; " >
+		<div class="card-header"><b>Listado de Usuarios</b></div>
+		<div class="card-body">
+    <div class="row mb-3">
+      <div class="col-md-8">
+        <input type="text" [(ngModel)]="filterText" (keyup.enter)="search()" class="form-control" placeholder="Buscar por DNI o Nombre...">
+      </div>
+      <div class="col-md-4">
+        <button (click)="search()" class="btn btn-primary">Buscar</button>
+      </div>
+    </div>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>DNI</th>
+          <th>Nombre Completo</th>
+          <th>Email</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{user.documentNumber}}</td>
+          <td>{{user.name}} {{user.fathersLastName}}</td>
+          <td>{{user.email}}</td>
+          <td>
+            <button class="btn btn-sm btn-warning" (click)="edit(user.documentNumber)">Editar</button>
+            <button class="btn btn-sm btn-danger" (click)="delete(user.documentNumber)">Borrar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+		</div>
+	</div>	
+</form>
